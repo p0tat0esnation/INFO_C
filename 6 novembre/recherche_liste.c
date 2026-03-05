@@ -21,3 +21,10 @@ int main()
   // Exemple d'utilisation possible ici
   return 0;
 }
+
+typedef struct Element2
+{
+  int nombre;
+  struct Element *suivant;
+  struct Element *precedent;
+} Element2;

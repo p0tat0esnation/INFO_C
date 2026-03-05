@@ -1,0 +1,220 @@
+\documentclass[10pt,landscape,a4paper]{article}
+
+% --- PAQUETS ET CONFIGURATION ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[margin=1cm]{geometry} % Marges fines
+\usepackage{multicol} % Pour les colonnes
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{listings} % Pour le code C
+% \usepackage{fontawesome5} % Pour les petites icônes (optionnel, sinon retirer)
+\usepackage[most]{tcolorbox} % Pour les jolies boîtes
+
+% --- COULEURS PERSONNALISÉES ---
+\definecolor{draculaBg}{RGB}{40, 42, 54}
+\definecolor{draculaFg}{RGB}{248, 248, 242}
+\definecolor{codeKeyword}{RGB}{255, 121, 198}
+\definecolor{codeString}{RGB}{241, 250, 140}
+\definecolor{codeComment}{RGB}{98, 114, 164}
+\definecolor{boxBlue}{RGB}{50, 150, 250}
+\definecolor{boxGreen}{RGB}{80, 200, 120}
+\definecolor{boxRed}{RGB}{220, 50, 50}
+\definecolor{boxPurple}{RGB}{150, 50, 200}
+\definecolor{boxOrange}{RGB}{255, 140, 0}
+
+% --- CONFIGURATION DU CODE C ---
+\lstset{
+    language=C,
+    basicstyle=\ttfamily\scriptsize,
+    keywordstyle=\color{codeKeyword}\bfseries,
+    stringstyle=\color{codeString},
+    commentstyle=\color{codeComment}\itshape,
+    backgroundcolor=\color{gray!10},
+    frame=none,
+    breaklines=true,
+    tabsize=2,
+    showstringspaces=false
+}
+
+% --- STYLE DES BOÎTES ---
+\newtcolorbox{mybox}[2][]{
+    enhanced,
+    colback=white,
+    colframe=#2,
+    coltitle=white,
+    fonttitle=\bfseries\sffamily,
+    title=#1,
+    arc=3mm,
+    boxrule=0.5mm,
+    drop shadow,
+    left=1mm, right=1mm, top=1mm, bottom=1mm,
+    before skip=2mm, after skip=2mm
+}
+
+% --- DÉBUT DU DOCUMENT ---
+\begin{document}
+
+% Titre stylé
+\begin{center}
+    {\Huge \sffamily \textbf{Survival Kit : Langage C \& Chaînes}} \\
+    {\small \textit{L'antisèche ultime pour les partiels - Gestion de la mémoire et manipulation de texte}}
+\end{center}
+
+\begin{multicols*}{3}
+
+% ----------------------------------------------------
+% SECTION 1: STRING.H - LES BASIQUES
+% ----------------------------------------------------
+\begin{mybox}[BASIQUES <string.h>]{boxBlue}
+    \textit{Opérations classiques. Attention au \texttt{\textbackslash0} !}
+    \begin{itemize}[leftmargin=*, noitemsep]
+        \item \textbf{\texttt{size\_t strlen(s)}} : Longueur sans \texttt{\textbackslash0}.
+        \item \textbf{\texttt{strcpy(dest, src)}} : Copie \texttt{src} dans \texttt{dest}.
+            \textit{\textcolor{red}{Danger:}} Buffer overflow si dest trop petit.
+        \item \textbf{\texttt{strncpy(dest, src, n)}} : Copie max \texttt{n} char.
+            \textit{\textcolor{red}{Piège:}} Ne met pas de \texttt{\textbackslash0} si coupé !
+        \item \textbf{\texttt{strcat(dest, src)}} : Ajoute à la fin.
+        \item \textbf{\texttt{strncat(dest, src, n)}} : Ajout sécurisé.
+        \item \textbf{\texttt{strcmp(s1, s2)}} : Compare.
+            \begin{itemize}
+                \item \texttt{0} : Égales.
+                \item \texttt{<0} : s1 avant s2.
+                \item \texttt{>0} : s1 après s2.
+            \end{itemize}
+        \item \textbf{\texttt{strdup(s)}} : Malloc + Copie + Return.
+            \textit{\textcolor{boxRed}{Impératif:}} Faire un \texttt{free()} après.
+    \end{itemize}
+\end{mybox}
+
+% ----------------------------------------------------
+% SECTION 2: RECHERCHE & ANALYSE
+% ----------------------------------------------------
+\begin{mybox}[RECHERCHE <string.h>]{boxBlue}
+    \begin{itemize}[leftmargin=*, noitemsep]
+        \item \textbf{\texttt{strchr(s, c)}} : Pointe vers la 1ère occurence de \texttt{c}. Return \texttt{NULL} si absent.
+        \item \textbf{\texttt{strrchr(s, c)}} : Pointe vers la \textbf{dernière} occurence.
+        \item \textbf{\texttt{strstr(haystack, needle)}} : Cherche une sous-chaîne dans une chaîne.
+        \item \textbf{\texttt{strtok(str, delim)}} : Découpe la chaîne (split).
+            \textit{Note:} Destructif (remplace sép. par \texttt{\textbackslash0}). Utiliser \texttt{NULL} pour continuer.
+            \begin{lstlisting}
+char *token = strtok(str, " ");
+while (token) {
+    printf("%s\n", token);
+    token = strtok(NULL, " ");
+}
+            \end{lstlisting}
+    \end{itemize}
+\end{mybox}
+
+% ----------------------------------------------------
+% SECTION 3: INSPECTION (CTYPE.H)
+% ----------------------------------------------------
+\begin{mybox}[INSPECTION <ctype.h>]{boxGreen}
+    \textit{Test sur un seul caractère (int c).}
+    \begin{itemize}[leftmargin=*, noitemsep]
+        \item \textbf{\texttt{isalpha(c)}} : A-Z ou a-z.
+        \item \textbf{\texttt{isdigit(c)}} : 0-9.
+        \item \textbf{\texttt{isalnum(c)}} : Lettre OU Chiffre.
+        \item \textbf{\texttt{isspace(c)}} : Espace, \texttt{\textbackslash t}, \texttt{\textbackslash n}, \texttt{\textbackslash v}, \texttt{\textbackslash f}, \texttt{\textbackslash r}.
+        \item \textbf{\texttt{isprint(c)}} : Caractère imprimable.
+        \item \textbf{\texttt{toupper(c)} / \texttt{tolower(c)}} : Conversion casse.
+    \end{itemize}
+\end{mybox}
+
+% ----------------------------------------------------
+% SECTION 4: CONVERSIONS
+% ----------------------------------------------------
+\begin{mybox}[CONVERSIONS]{boxOrange}
+    \textit{Bibliothèques <stdlib.h> et <stdio.h>}
+    \begin{itemize}[leftmargin=*, noitemsep]
+        \item \textbf{\texttt{atoi(str)}} : String vers Int.
+            \textit{Limité:} Retourne 0 si erreur.
+        \item \textbf{\texttt{strtol(str, \&end, base)}} : La version Pro.
+            Permet de gérer les erreurs et la base (10, 16, 2...).
+        \item \textbf{\texttt{sprintf(buf, fmt, ...)}} : "Print" dans une string.
+            \textit{Ex:} \texttt{sprintf(buf, "\%d", 42);} $\rightarrow$ Int to Str.
+        \item \textbf{\texttt{sscanf(str, fmt, ...)}} : Lire depuis une string.
+    \end{itemize}
+\end{mybox}
+
+% ----------------------------------------------------
+% SECTION 5: MÉMOIRE BRUTE
+% ----------------------------------------------------
+\begin{mybox}[MÉMOIRE <string.h>]{boxRed}
+    \textit{Opérations sur \texttt{void*}. Pas d'arrêt au \texttt{\textbackslash0}.}
+    \begin{itemize}[leftmargin=*, noitemsep]
+        \item \textbf{\texttt{memset(ptr, val, n)}} : Remplit \texttt{n} octets avec \texttt{val}.
+            \textit{Usage:} \texttt{memset(arr, 0, sizeof(arr));}
+        \item \textbf{\texttt{memcpy(dst, src, n)}} : Copie rapide.
+            \textit{\textcolor{red}{Interdit:}} Chevauchement (overlap).
+        \item \textbf{\texttt{memmove(dst, src, n)}} : Copie sûre (gère l'overlap).
+        \item \textbf{\texttt{memcmp(p1, p2, n)}} : Compare deux blocs mémoire.
+    \end{itemize}
+\end{mybox}
+
+% ----------------------------------------------------
+% SECTION 6: ALGOS CLASSIQUES
+% ----------------------------------------------------
+\begin{mybox}[ALGOS À LA CON (EXAM)]{boxPurple}
+    \textbf{1. Swap sans variable temp}
+    \begin{lstlisting}
+void swap(int *a, int *b) {
+    *a = *a ^ *b;
+    *b = *a ^ *b;
+    *a = *a ^ *b;
+}
+    \end{lstlisting}
+    
+    \textbf{2. Inverser une chaîne (in-place)}
+    \begin{lstlisting}
+void strrev(char *str) {
+    int i = 0, j = strlen(str) - 1;
+    while (i < j) {
+        char temp = str[i];
+        str[i++] = str[j];
+        str[j--] = temp;
+    }
+}
+    \end{lstlisting}
+    
+    \textbf{3. Est puissance de 2 ?}
+    \begin{lstlisting}
+int is_pow2(int n) {
+    return (n > 0 && !(n & (n - 1)));
+}
+    \end{lstlisting}
+\end{mybox}
+
+% ----------------------------------------------------
+% SECTION 7: POINTEURS & PIÈGES
+% ----------------------------------------------------
+\begin{mybox}[MEMO POINTEURS]{boxRed}
+    \begin{itemize}[leftmargin=*, noitemsep]
+        \item \textbf{\texttt{char *s = "Bonjour";}} :
+            Stocké en lecture seule (RO). \texttt{s[0] = 'b'} $\rightarrow$ \textbf{Segfault}.
+        \item \textbf{\texttt{char s[] = "Bonjour";}} :
+            Tableau modifiable sur la stack. OK.
+        \item \textbf{\texttt{malloc(n)}} :
+            Toujours vérifier si retour != NULL.
+        \item \textbf{\texttt{free(ptr)}} :
+            Ne jamais free deux fois (Double Free). Mettre \texttt{ptr = NULL} après.
+    \end{itemize}
+\end{mybox}
+
+% ----------------------------------------------------
+% SECTION 8: FONCTIONS BONUS
+% ----------------------------------------------------
+\begin{mybox}[BONUS (POUR BRILLER)]{boxOrange}
+    \begin{itemize}[leftmargin=*, noitemsep]
+        \item \textbf{\texttt{strcspn(s, reject)}} : Longueur du segment initial qui NE contient PAS les chars de \textit{reject}.
+            \textit{Astuce:} Pour enlever le \texttt{\textbackslash n} de \texttt{fgets} :
+            \texttt{s[strcspn(s, "\textbackslash n")] = 0;}
+        \item \textbf{\texttt{strspn(s, accept)}} : Longueur du segment initial contenant QUE des chars de \textit{accept}.
+        \item \textbf{\texttt{perror("msg")}} : Affiche l'erreur système actuelle sur stderr.
+    \end{itemize}
+\end{mybox}
+
+\end{multicols*}
+\end{document}

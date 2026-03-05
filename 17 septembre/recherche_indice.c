@@ -2,7 +2,6 @@
 
 /* --------------- Recherche d'un élément dans un tableau */
 
-int main() {
 void rechercheIndice (float tab[], int nbVal, float nb)
 {
   int trouve=0, i=0;
@@ -21,7 +20,8 @@ void rechercheIndice (float tab[], int nbVal, float nb)
   return;
 }
 
-float t[] = {1, 2, 3, 23.0, 5, 6};
-rechercheIndice (t, 6, 23.0);
-return 0;
+int main() {
+  float t[] = {1, 2, 3, 23.0, 5, 6};
+  rechercheIndice (t, 6, 23.0);
+  return 0;
 }

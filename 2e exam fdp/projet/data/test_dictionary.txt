@@ -1,0 +1,7 @@
+listen
+silent
+enlist
+apple
+stone
+notes
+tones

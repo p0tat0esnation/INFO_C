@@ -1,0 +1,13 @@
+EXO 1 : comparer 2 caractères avec sensibilité à la casse ou non en parametre
+
+EXO 2 : avec la fonction précédente, vérifier si 2 mots sont des anagrammes
+
+EXO 3 : lire un fichier dictionnaire et vérif combien d'anagrammes d'un mot il y a dedans
+
+EXO 4 : le main qui utilise la fonction dico pour print les résultats
+
+
+
+
+agalan@grenoble-inp.fr
+
