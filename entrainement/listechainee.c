@@ -1,14 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int compterElements(Element *debut);
+int modifiervaleur(Element *debut, int cible, int nouveau);
+
 typedef struct Element Element;
 struct Element
 {
     int nombre;
     Element *suivant;
 };
-
-int compterElements(Element *debut);
 
 int compterElements(Element *debut)
 {
@@ -20,8 +21,6 @@ int compterElements(Element *debut)
     }
     return cpt;
 }
-
-int modifiervaleur(Element *debut, int cible, int nouveau);
 
 int modifiervaleur(Element *debut, int cible, int nouveau)
 {
@@ -37,8 +36,6 @@ int modifiervaleur(Element *debut, int cible, int nouveau)
     }
     return cpt;
 }
-
-Element *ajouterenfin(Element *debut, int valeur);
 
 Element *ajouterenfin(Element *debut, int valeur)
 {
