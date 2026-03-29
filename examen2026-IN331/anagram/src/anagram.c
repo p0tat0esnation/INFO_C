@@ -14,6 +14,6 @@ int main(int argc, const char *argv[])
 {
     //    TODO: Implement the main function to handle command line arguments,
     //    call find_anagram_in_dict, and return appropriate exit code.
-
+    
     return 0;
 }

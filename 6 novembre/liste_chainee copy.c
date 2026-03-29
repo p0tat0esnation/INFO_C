@@ -14,22 +14,16 @@ struct Element
 Element *creationListe(int nb) /* Itératif */
 {
   Element *resteListe = NULL;
-
-  if (nb <= 0)
-    return NULL;
-
-  Element *nouveau = NULL;
-  while (nb > 0)
+  do
   {
-    nouveau = malloc(sizeof(*nouveau));
+    Element *nouveau = malloc(sizeof(*nouveau)); /* pas besoin de déclarer dans la boucle: à corriger */
     if (nouveau == NULL)
       exit(EXIT_FAILURE);
     nouveau->nombre = nb;
     nouveau->suivant = resteListe;
     resteListe = nouveau;
     nb--;
-  }
-
+  } while (nb > 0);
   return resteListe;
 }
 
@@ -37,44 +31,21 @@ Element *insertion(Element *debut, int nouveauNb) /* Insertion en début de list
 {
   /* Création d'un nouvel élément */
   Element *nouveau = malloc(sizeof(*nouveau));
-
-  if (nouveau == NULL)
+  if (debut == NULL || nouveau == NULL)
     exit(EXIT_FAILURE);
-
   nouveau->nombre = nouveauNb;
   nouveau->suivant = debut;
   return nouveau;
 }
 
-void libererListe(Element *debut)
-{
-  Element *suivant = NULL;
-
-  while (debut != NULL)
-  {
-    suivant = debut->suivant;
-    free(debut);
-    debut = suivant;
-  }
-}
-
 int main(void)
 {
   Element *debut = creationListe(10);
-  Element *courant = NULL;
-
   debut = insertion(debut, 11);
-  courant = debut;
-
-  while (courant != NULL)
+  while (debut != NULL)
   {
-    printf("%d   ", courant->nombre);
-    courant = courant->suivant;
+    printf("%d   ", debut->nombre);
+    debut = debut->suivant;
   }
-
   printf("\n");
-
-  libererListe(debut);
-
-  return 0;
 }
